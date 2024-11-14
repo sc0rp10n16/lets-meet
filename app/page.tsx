@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton} from "@clerk/nextjs";
 
 import Link from "next/link";
 
@@ -22,7 +22,7 @@ export default function Home() {
             <Button className="mt-10">
               <Link href='/dashboard'>Dashboard</Link>
             </Button>
-            {/* <SignOutButton/> */}
+            
           </SignedIn>
           <SignedOut>
             <Button asChild className="mt-10">
