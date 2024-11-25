@@ -1,10 +1,24 @@
 import { cn } from '@/lib/utils'
 import {  CallControls, CallParticipantsList, PaginatedGridLayout, SpeakerLayout } from '@stream-io/video-react-sdk'
+import { useRouter, useSearchParams } from 'next/navigation'
 import React, { useState } from 'react'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { LayoutDashboard } from 'lucide-react'
+import EndCallButton from './EndCallButton'
 
 type CallLayoutType = 'speaker-left' | 'speaker-right' | 'grid'
 
 const MeetingRoom = () => {
+    const router = useRouter()
+    const searchParams = useSearchParams()
+    const isPersonalRoom = !!searchParams.get('personal');
     const [layout, setlayout] = useState<CallLayoutType>('grid')
     const [showParticipants, setShowParticipants] = useState(false)
     const CallLayout = () => {
@@ -33,7 +47,27 @@ const MeetingRoom = () => {
             </div>
         </div>
         <div className="fixed bottom-0 flex w-full items-center justify-center gap-5">
-            <CallControls/>
+            <CallControls onLeave={() => router.push('/dashboard')}/>
+            <DropdownMenu>
+                <div className="flex items-center">
+
+                    <DropdownMenuTrigger className='cursor-pointer rounded-3xl bg-[#19232d] hover:bg-[#4c535b] p-2'>
+                        <LayoutDashboard size={20}/>
+                    </DropdownMenuTrigger>
+                </div>
+                <DropdownMenuContent>
+                    {['Grid', 'Speaker-left', 'Speaker-right'].map((item, index) => (
+                        <div key={index}>
+                            <DropdownMenuItem
+                                onClick={() => setlayout(item.toLowerCase() as CallLayoutType)}
+                            >{item}</DropdownMenuItem>
+                        </div>
+                    ))}
+                    
+                    
+                </DropdownMenuContent>
+            </DropdownMenu>
+            {!isPersonalRoom && <EndCallButton/>}
         </div>
     </section>
   )

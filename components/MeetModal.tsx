@@ -15,7 +15,7 @@ interface MeetModalProps{
     isOpen: boolean,
     onClose: () => void,
     title: string,
-    buttonLabel: string,
+    buttonLabel?: string,
     className?: string,
     handleClick: () => void,
     buttonIcon?: React.ReactNode,

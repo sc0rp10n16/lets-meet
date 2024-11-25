@@ -6,6 +6,9 @@ import MeetModal from './MeetModal'
 import { useUser } from '@clerk/nextjs'
 import { Call, useStreamVideoClient } from '@stream-io/video-react-sdk'
 import { useRouter } from 'next/navigation'
+import { Input } from './ui/input'
+import { Textarea } from './ui/textarea'
+import ReactDatePicker from 'react-datepicker'
 
 // Client Side Rendering & Server Side Rendering
 const MeetingType = () => {
@@ -88,6 +91,63 @@ const MeetingType = () => {
             className="text-center text-gray-800"
             handleClick={createMeeting}
          />
+         <MeetModal
+          isOpen={meetState==='isJoinMeeting'}
+          onClose={()=>setMeetState(undefined)}
+          title='Type the link to join the meeting'
+          className="text-center text-gray-800"
+          buttonLabel='Join Meeting'
+          handleClick={() => router.push(values.link)}
+         >
+          <Input
+            placeholder='Meeting Link'
+            onChange={(e)=>setValues({...values, link: e.target.value })}
+          />
+         </MeetModal>
+         {!callDetails ? (
+          <MeetModal
+            isOpen={meetState==='isScheduleMeeting'}
+            onClose={()=>setMeetState(undefined)}
+            title='create meeting'
+            handleClick={createMeeting}
+            buttonLabel='Schedule Meeting'
+          >
+            <div className="flex flex-col gap-2.5">
+              <label className='text-base font-normal'>Add a description</label>
+              <Textarea
+                className='border-none focus-visible:ring-0 focus-visible:ring-offset-0'
+                onChange={(e) => setValues({...values, description: e.target.value})}
+              />
+            </div>
+            <div className="flex w-full flex-col">
+              <label className='text-base font-normal'>Select Date and time</label>
+              <ReactDatePicker
+                selected={values.dateTime}
+                onChange={(date) => setValues({...values, dateTime: date!})}
+                showTimeSelect
+                timeFormat='HH:mm'
+                timeIntervals={15}
+                timeCaption='time'
+                dateFormat='MMMM d, yyyy h:mm aa'
+                className='w-full rounded focus:outline-none'
+              />
+            </div>
+          </MeetModal>
+         ) : (
+          <MeetModal
+            isOpen={meetState==='isScheduleMeeting'}
+            onClose={()=>setMeetState(undefined)}
+            title='Meeting Scheduled'
+              
+            handleClick={() => {
+              // navigator.clipboard.writeText(meetingLink)
+
+            }}
+            image='/checked.svg'
+            buttonLabel='Copy Meeting Link'
+            className='text-center text-gray-800'
+          />
+         )}
     </section>
   )
 }
