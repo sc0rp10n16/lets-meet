@@ -4,6 +4,8 @@ import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import StreamVideoProvider from "@/providers/StreamClientProvider";
 import '@stream-io/video-react-sdk/dist/css/styles.css'
+import 'react-datepicker/dist/react-datepicker.css';
+
 
 
 
